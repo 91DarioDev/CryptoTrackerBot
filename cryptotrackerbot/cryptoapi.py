@@ -18,8 +18,9 @@ import requests
 
 
 def get_price(coins): 
-	base = "https://min-api.cryptocompare.com/data/pricemulti?fsyms={}&tsyms=BTC,USD,EUR"
-	upper_coins = [coin.upper() for coin in coins]
-	string = ",".join(upper_coins)
-	response = requests.get(base.format(string)).json()
-	return response
+    base = "https://min-api.cryptocompare.com/data/pricemulti?fsyms={}&tsyms=BTC,USD,EUR"
+    upper_coins = [coin.upper() for coin in coins]
+    string = ",".join(upper_coins)
+    response = requests.get(base.format(string)).json()
+    return response
+    

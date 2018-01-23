@@ -18,35 +18,35 @@ from cryptotrackerbot import cryptoapi
 
 
 def price_command(bot, update, args):
-	if len(args) == 0:  # return if no args added
-		text = "Error: You have to append to the command as parameters the code of the crypto you want\n\nExample:<code>/price btc eth xmr</code>"
-		update.message.reply_text(text, parse_mode='HTML')
-		return
+    if len(args) == 0:  # return if no args added
+        text = "Error: You have to append to the command as parameters the code of the crypto you want\n\nExample:<code>/price btc eth xmr</code>"
+        update.message.reply_text(text, parse_mode='HTML')
+        return
 
-	response = cryptoapi.get_price(args)
-	print(response)
-	if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
-		text = "<b>Error!</b>"
-		text += "\n{}".format(response['Message']) if 'Message' in response else ''
-		update.message.reply_text(text, parse_mode='HTML')
-		return
+    response = cryptoapi.get_price(args)
+    print(response)
+    if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
+        text = "<b>Error!</b>"
+        text += "\n{}".format(response['Message']) if 'Message' in response else ''
+        update.message.reply_text(text, parse_mode='HTML')
+        return
 
-	text = ""
-	for coin in response:
-		text += "<b>— {}:</b>".format(coin)
-		prices = response[coin]
-		for price in prices:
-			text += "\n  - {}: {}".format(price, prices[price])
-		text += "\n\n"
-	update.message.reply_text(text, parse_mode='HTML')
+    text = ""
+    for coin in response:
+        text += "<b>— {}:</b>".format(coin)
+        prices = response[coin]
+        for price in prices:
+            text += "\n  - {}: {}".format(price, prices[price])
+        text += "\n\n"
+    update.message.reply_text(text, parse_mode='HTML')
 
 
 def help(bot, update):
-	text = (
-		"<b>SUPPORTED COMMANDS:</b>"
-		"/price - <i>return price of crypto</i>"
-		"/help - <i>return help message</i>"
-		"\n"
-		"This bot is released under the terms of AGPL 3.0 LICENSE"
-	)
-	update.message.reply_text(text, parse_mode='HTML')
+    text = (
+        "<b>SUPPORTED COMMANDS:</b>"
+        "/price - <i>return price of crypto</i>"
+        "/help - <i>return help message</i>"
+        "\n"
+        "This bot is released under the terms of AGPL 3.0 LICENSE"
+    )
+    update.message.reply_text(text, parse_mode='HTML')

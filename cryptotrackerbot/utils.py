@@ -16,4 +16,4 @@
 
 
 def send_autodestruction_message(bot, update):
-	
+    pass
