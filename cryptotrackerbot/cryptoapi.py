@@ -23,4 +23,9 @@ def get_price(coins):
     string = ",".join(upper_coins)
     response = requests.get(base.format(string)).json()
     return response
-    
+
+
+def get_rank(limit=10):
+    base = "https://api.coinmarketcap.com/v1/ticker/?limit={}"
+    response = requests.get(base.format(limit)).json()
+    return response

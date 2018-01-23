@@ -17,6 +17,7 @@
 
 from telegram.ext.dispatcher import run_async
 from telegram.error import BadRequest
+from cryptotrackerbot import emoji
 
 
 def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML', 
@@ -50,3 +51,13 @@ def sep(num, none_is_zero=False):
     if num is None:
         return 0 if none_is_zero is False else None
     return "{:,}".format(num)
+
+
+def arrow_up_or_down(value):
+    return emoji.ARROW_UP if value >= 0 else emoji.ARROW_DOWN
+
+
+def string_to_number(string):
+    number = string.replace(',', '')
+    number = string.replace('.', '')
+    return int(number)
