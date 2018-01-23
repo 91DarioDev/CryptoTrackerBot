@@ -39,7 +39,7 @@ def price_command(bot, update, args, job_queue):
         prices = response[coin]
         for fiat in prices:
             emoji_coin = emoji.BTC if fiat.upper() == 'BTC' else emoji.USD if fiat.upper() == 'USD' else emoji.EUR if fiat.upper() == 'EUR' else ""
-            text += "\n  - {}{}: {}".format(emoji_coin, fiat, prices[fiat])
+            text += "\n  - {}{}: {}".format(emoji_coin, fiat, utils.sep(prices[fiat]))
         text += "\n\n"
     utils.send_autodestruction_message(bot, update, job_queue, text)
 

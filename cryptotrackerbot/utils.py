@@ -14,6 +14,9 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
+
+import babel
+
 from telegram.ext.dispatcher import run_async
 from telegram.error import BadRequest
 
@@ -41,3 +44,9 @@ def destruction(bot, job):
             bot.deleteMessage(chat_id=chat_id, message_id=msg)
         except BadRequest:
                 pass
+
+
+def sep(num, none_is_zero=False):
+    if num is None:
+        return 0 if none_is_zero is False else None
+    return "{:,}".format(num)
