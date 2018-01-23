@@ -49,6 +49,7 @@ def help(bot, update, job_queue):
         "<b>SUPPORTED COMMANDS:</b>\n"
         "/price - <i>return price of crypto</i>\n"
         "/help - <i>return help message</i>\n"
+        "/rank - <i>return coins rank</i>"
         "\n"
         "Note: If this bot is added in groups as admin, in order to keep the chat clean of spam, after few seconds it deletes both "
         "the command issued by the user and the message sent by the bot."
