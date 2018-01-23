@@ -15,8 +15,6 @@
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import babel
-
 from telegram.ext.dispatcher import run_async
 from telegram.error import BadRequest
 
