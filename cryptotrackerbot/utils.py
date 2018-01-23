@@ -54,10 +54,13 @@ def sep(num, none_is_zero=False):
 
 
 def arrow_up_or_down(value):
-    return emoji.ARROW_UP if value >= 0 else emoji.ARROW_DOWN
+    return emoji.GREEN if value >= 0 else emoji.RED
 
 
 def string_to_number(string):
     number = string.replace(',', '')
-    number = string.replace('.', '')
-    return int(number)
+    try:
+        number = int(number)
+    except ValueError:
+        number = float(number)
+    return number

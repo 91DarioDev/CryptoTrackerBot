@@ -62,11 +62,10 @@ def rank_command(bot, update, job_queue):
     text = ""
     response = cryptoapi.get_rank()
     for coin in response:
-        text += "<b>{}) {} ({})</b>\n".format(coin['rank'], coin['name'], coin['symbol'])
-        text += "   price usd: {}\n".format(coin['price_usd'])
-        text += "   1h change %: {} {}\n".format(coin["percent_change_1h"], utils.arrow_up_or_down(utils.string_to_number(coin["percent_change_1h"])))
-        text += "   24h change %: {} {}\n".format(coin["percent_change_24h"], utils.arrow_up_or_down(utils.string_to_number(coin["percent_change_24h"])))
-        text += "   7d change %s: {} {}\n".format(coin["percent_change_7d"], utils.arrow_up_or_down(utils.string_to_number(coin["percent_change_7d"])))
+        text += "<b>{}){}:</b>".format(coin['rank'], coin['symbol'])
+        text += " {}".format("+" if utils.string_to_number(coin["percent_change_24h"]) > 0 else "")
+        text += "{}{}".format(coin["percent_change_24h"], utils.arrow_up_or_down(utils.string_to_number(coin["percent_change_24h"])))
+        text += " {}{}".format(utils.sep(utils.string_to_number(coin['price_usd'])), emoji.USD)
         text += "\n\n"
     utils.send_autodestruction_message(bot, update, job_queue, text, destruct_in=120)
 
