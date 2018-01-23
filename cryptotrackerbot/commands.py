@@ -46,9 +46,9 @@ def price_command(bot, update, args, job_queue):
 
 def help(bot, update):
     text = (
-        "<b>SUPPORTED COMMANDS:</b>"
-        "/price - <i>return price of crypto</i>"
-        "/help - <i>return help message</i>"
+        "<b>SUPPORTED COMMANDS:</b>\n"
+        "/price - <i>return price of crypto</i>\n"
+        "/help - <i>return help message</i>\n"
         "\n"
         "This bot is released under the terms of AGPL 3.0 LICENSE"
     )

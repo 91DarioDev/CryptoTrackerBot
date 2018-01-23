@@ -51,7 +51,7 @@ def main():
 
     # commands
     dp.add_handler(CommandHandler('price', commands.price_command, pass_args=True, pass_job_queue=True))
-    dp.add_handler(CommandHandler('help', commands.help))
+    dp.add_handler(CommandHandler(('start', 'help'), commands.help))
 
 
     # handle errors
