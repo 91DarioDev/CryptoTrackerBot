@@ -19,7 +19,7 @@ from telegram.error import BadRequest
 
 
 def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML', destruct_in=20):
-    if update.effective_chat == "private":
+    if update.effective_chat.type == "private":
         update.message.reply_text(text, parse_mode=parse_mode)
     else:
         message_id = update.message.reply_text(text, parse_mode=parse_mode).message_id
