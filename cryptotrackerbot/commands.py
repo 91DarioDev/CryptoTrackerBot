@@ -50,6 +50,6 @@ def help(bot, update):
         "/price - <i>return price of crypto</i>\n"
         "/help - <i>return help message</i>\n"
         "\n"
-        "This bot is released under the terms of AGPL 3.0 LICENSE"
+        "This bot is <a href=\"http://www.example.com/\">released under the terms of AGPL 3.0 LICENSE</a>"
     )
-    update.message.reply_text(text, parse_mode='HTML')
+    update.message.reply_text(text, parse_mode='HTML', disable_web_page_preview=True)
