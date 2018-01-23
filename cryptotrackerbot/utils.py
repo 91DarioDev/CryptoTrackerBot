@@ -15,16 +15,17 @@
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
 from telegram.ext.dispatcher import run_async
+from telegram.error import BadRequest
 
 
-def send_autodestruction_message(bot, update, job, text, parse_mode='HTML', destruct_in=20):
+def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML', destruct_in=20):
     if update.effective_chat == "private":
         update.message.reply_text(text, parse_mode=parse_mode)
     else:
         message_id = update.message.reply_text(text, parse_mode=parse_mode).message_id
         chat_id = update.effective_chat.id
         command_id = update.message.message_id
-        job.job_queue.run_once(
+        job_queue.run_once(
             destruction, 
             destruct_in, 
             context=[chat_id, command_id, message_id]
@@ -32,11 +33,11 @@ def send_autodestruction_message(bot, update, job, text, parse_mode='HTML', dest
 
 
 @run_async
-def destruct(bot, job):
+def destruction(bot, job):
     chat_id = job.context[0]
     msgs_to_destruct = [job.context[1], job.context[2]]
     for msg in msgs_to_destruct:
         try:
             bot.deleteMessage(chat_id=chat_id, message_id=msg)
-        except Exception as e:
-            print(e)
+        except BadRequest:
+                pass

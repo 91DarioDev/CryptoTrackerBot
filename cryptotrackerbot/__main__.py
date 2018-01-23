@@ -50,7 +50,7 @@ def main():
     dp = updater.dispatcher
 
     # commands
-    dp.add_handler(CommandHandler('price', commands.price_command, pass_args=True))
+    dp.add_handler(CommandHandler('price', commands.price_command, pass_args=True, pass_job_queue=True))
     dp.add_handler(CommandHandler('help', commands.help))
 
 

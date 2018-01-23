@@ -15,30 +15,33 @@
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
 from cryptotrackerbot import cryptoapi
+from cryptotrackerbot import utils
+from cryptotrackerbot import emoji
 
 
-def price_command(bot, update, args):
+def price_command(bot, update, args, job_queue):
     if len(args) == 0:  # return if no args added
         text = "Error: You have to append to the command as parameters the code of the crypto you want\n\nExample:<code>/price btc eth xmr</code>"
-        update.message.reply_text(text, parse_mode='HTML')
+        utils.send_autodestruction_message(bot, update, job_queue, text)
         return
 
     response = cryptoapi.get_price(args)
-    print(response)
+    #print(response)
     if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
         text = "<b>Error!</b>"
         text += "\n{}".format(response['Message']) if 'Message' in response else ''
-        update.message.reply_text(text, parse_mode='HTML')
+        utils.send_autodestruction_message(bot, update, job_queue, text)
         return
 
     text = ""
     for coin in response:
         text += "<b>— {}:</b>".format(coin)
         prices = response[coin]
-        for price in prices:
-            text += "\n  - {}: {}".format(price, prices[price])
+        for fiat in prices:
+            emoji_coin = emoji.BTC if fiat.upper() == 'BTC' else emoji.USD if fiat.upper() == 'USD' else emoji.EUR if fiat.upper() == 'EUR' else ""
+            text += "\n  - {}{}: {}".format(emoji_coin, fiat, prices[fiat])
         text += "\n\n"
-    update.message.reply_text(text, parse_mode='HTML')
+    utils.send_autodestruction_message(bot, update, job_queue, text)
 
 
 def help(bot, update):
