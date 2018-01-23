@@ -23,6 +23,8 @@ from telegram.ext import (
     MessageHandler,
     Filters)
 
+from cryptotrackerbot import commands
+
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -48,7 +50,9 @@ def main():
     dp = updater.dispatcher
 
     # commands
-    
+    dp.add_handler(CommandHandler('price', commands.price_command, pass_args=True))
+    dp.add_handler(CommandHandler('help', commands.help))
+
 
     # handle errors
     dp.add_error_handler(error)

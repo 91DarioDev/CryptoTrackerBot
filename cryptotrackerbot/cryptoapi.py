@@ -14,40 +14,12 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
+import requests
 
-import setuptools
 
-
-setuptools.setup(
-
-    name="cryptotrackerbot",
-    version="1",
-
-    license="AGPL-3.0",
-
-    author="Dario 91DarioDev",
-    author_email="dariomsn@hotmail.it",
-
-    install_requires=[
-        "python-telegram-bot",
-        "requests"
-    ],
-
-    packages=[
-        "cryptotrackerbot",
-    ],
-
-    entry_points={
-        "console_scripts": [
-            "cryptotrackerbot = cryptotrackerbot.__main__:main",
-        ],
-    },
-
-    include_package_data=True,
-    zip_safe=False,
-
-    classifiers=[
-        "Not on PyPI"
-    ],
-
-)
+def get_price(coins): 
+	base = "https://min-api.cryptocompare.com/data/pricemulti?fsyms={}&tsyms=BTC,USD,EUR"
+	upper_coins = [coin.upper() for coin in coins]
+	string = ",".join(upper_coins)
+	response = requests.get(base.format(string)).json()
+	return response
