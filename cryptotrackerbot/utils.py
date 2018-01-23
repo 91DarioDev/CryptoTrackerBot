@@ -19,11 +19,11 @@ from telegram.ext.dispatcher import run_async
 from telegram.error import BadRequest
 
 
-def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML', destruct_in=20):
+def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML', destruct_in=20, quote=False):
     if update.effective_chat.type == "private":
         update.message.reply_text(text, parse_mode=parse_mode)
     else:
-        message_id = update.message.reply_text(text, parse_mode=parse_mode).message_id
+        message_id = update.message.reply_text(text, parse_mode=parse_mode, quote=quote).message_id
         chat_id = update.effective_chat.id
         command_id = update.message.message_id
         job_queue.run_once(
