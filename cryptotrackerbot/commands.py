@@ -55,4 +55,4 @@ def help(bot, update, job_queue):
         "\n"
         "This bot is <a href=\"https://github.com/91DarioDev/CryptoTrackerBot\">released under the terms of AGPL 3.0 LICENSE</a>."
     )
-    utils.send_autodestruction_message(bot, update, job_queue, text, disable_web_page_preview=True)
+    utils.send_autodestruction_message(bot, update, job_queue, text, destruct_in=120, disable_web_page_preview=True)
