@@ -44,7 +44,7 @@ def price_command(bot, update, args, job_queue):
     utils.send_autodestruction_message(bot, update, job_queue, text)
 
 
-def help(bot, update):
+def help(bot, update, job_queue):
     text = (
         "<b>SUPPORTED COMMANDS:</b>\n"
         "/price - <i>return price of crypto</i>\n"
@@ -55,4 +55,4 @@ def help(bot, update):
         "\n"
         "This bot is <a href=\"https://github.com/91DarioDev/CryptoTrackerBot\">released under the terms of AGPL 3.0 LICENSE</a>."
     )
-    update.message.reply_text(text, parse_mode='HTML', disable_web_page_preview=True)
+    utils.send_autodestruction_message(bot, update, job_queue, text, disable_web_page_preview=True)
