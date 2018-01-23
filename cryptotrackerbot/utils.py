@@ -13,3 +13,7 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
+
+
+def send_autodestruction_message(bot, update):
+	
