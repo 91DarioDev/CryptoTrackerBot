@@ -91,18 +91,18 @@ def string_to_number(string):
 
 
 def build_graph(x, y):
-    fig = plyplot.figure(figsize=(10, 5))
-    plyplot.plot(x, y)
-    plyplot.xlabel('time')
-    plyplot.ylabel('price')
+    fig = pyplot.figure(figsize=(10, 5))
+    pyplot.plot(x, y)
+    pyplot.xlabel('time')
+    pyplot.ylabel('price')
     labels_time = [datetime.datetime.utcfromtimestamp(i).strftime('%d-%m %H:%M') for i in x]
-    plyplot.xticks(x, labels_time, rotation=75, fontsize=10)
-    plyplot.tight_layout()
+    pyplot.xticks(x, labels_time, rotation=75, fontsize=10)
+    pyplot.tight_layout()
     #matplotlib.pyplot.subplots_adjust(bottom=0.25)
 
 
     bio = io.BytesIO()
     bio.name = "test.png"
-    plyplot.savefig(bio, format='png')
+    pyplot.savefig(bio, format='png')
     bio.seek(0)
     return bio
