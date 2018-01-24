@@ -18,7 +18,7 @@ import datetime
 import io
 import matplotlib
 matplotlib.use('Agg')
-from matplotlib import pyplot as pl
+from matplotlib import pyplot as plt
 from PIL import Image
 
 from telegram.ext.dispatcher import run_async
