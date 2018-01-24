@@ -23,6 +23,7 @@ from telegram.ext.dispatcher import run_async
 from telegram.error import BadRequest
 from cryptotrackerbot import emoji
 
+matplotlib.use('Agg')
 
 def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML', 
                                 destruct_in=20, quote=False, disable_web_page_preview=True):
