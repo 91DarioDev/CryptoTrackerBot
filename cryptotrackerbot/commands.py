@@ -20,7 +20,11 @@ from cryptotrackerbot import cryptoapi
 from cryptotrackerbot import utils
 from cryptotrackerbot import emoji
 
+from telegram.ext.dispatcher import run_async
 
+
+
+@run_async
 def price_command(bot, update, args, job_queue):
     if len(args) == 0:  # return if no args added
         text = "Error: You have to append to the command as parameters the code of the crypto you want\n\nExample:<code>/price btc eth xmr</code>"
@@ -46,6 +50,7 @@ def price_command(bot, update, args, job_queue):
     utils.send_autodestruction_message(bot, update, job_queue, text)
 
 
+@run_async
 def help(bot, update, job_queue):
     text = (
         "<b>SUPPORTED COMMANDS:</b>\n"
@@ -62,6 +67,7 @@ def help(bot, update, job_queue):
     utils.send_autodestruction_message(bot, update, job_queue, text, destruct_in=120, disable_web_page_preview=True)
 
 
+@run_async
 def rank_command(bot, update, job_queue):
     text = ""
     response = cryptoapi.get_rank()
@@ -75,6 +81,7 @@ def rank_command(bot, update, job_queue):
 
 
 
+@run_async
 def graph_command(bot, update, job_queue, args):
     if len(args) != 1:
         text = "Error: You have to append to the command as parameters the code of only one crypto you want\n\nExample:<code>/graph btc</code>"

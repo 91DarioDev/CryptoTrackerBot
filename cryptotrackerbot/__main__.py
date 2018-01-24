@@ -44,7 +44,7 @@ def main():
 
     print("\nrunning...")
     # define the updater
-    updater = Updater(token=bot_token)
+    updater = Updater(token=bot_token, workers=10)
     
     # define the dispatcher
     dp = updater.dispatcher
