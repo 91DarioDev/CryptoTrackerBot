@@ -65,8 +65,8 @@ def rank_command(bot, update, job_queue):
     for coin in response:
         text += "<b>{}){}:</b>".format(coin['rank'], coin['symbol'])
         text += " {}".format("+" if utils.string_to_number(coin["percent_change_24h"]) > 0 else "")
-        text += "{}{}".format(coin["percent_change_24h"], utils.arrow_up_or_down(utils.string_to_number(coin["percent_change_24h"])))
-        text += " {}{}".format(utils.sep(utils.string_to_number(coin['price_usd'])), emoji.USD)
+        text += "{}%{}".format(coin["percent_change_24h"], utils.arrow_up_or_down(utils.string_to_number(coin["percent_change_24h"])))
+        text += " {}{}".format(utils.sep(round(utils.string_to_number(coin['price_usd']), 2)), emoji.USD)
         text += "\n\n"
     utils.send_autodestruction_message(bot, update, job_queue, text, destruct_in=120)
 
