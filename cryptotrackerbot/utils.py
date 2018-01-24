@@ -17,6 +17,7 @@
 import datetime
 import io
 import matplotlib
+import matplotlib.pyplot
 from PIL import Image
 
 from telegram.ext.dispatcher import run_async
