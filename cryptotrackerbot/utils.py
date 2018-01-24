@@ -18,7 +18,7 @@ import datetime
 import io
 import matplotlib
 matplotlib.use('Agg')
-from matplotlib import pyplot as plt
+from matplotlib import pyplot
 from PIL import Image
 
 from telegram.ext.dispatcher import run_async
@@ -91,18 +91,18 @@ def string_to_number(string):
 
 
 def build_graph(x, y):
-    fig =plt.figure(figsize=(10, 5))
-    plt.plot(x, y)
-    plt.xlabel('time')
-    plt.ylabel('price')
+    fig = plyplot.figure(figsize=(10, 5))
+    plyplot.plot(x, y)
+    plyplot.xlabel('time')
+    plyplot.ylabel('price')
     labels_time = [datetime.datetime.utcfromtimestamp(i).strftime('%d-%m %H:%M') for i in x]
-    plt.xticks(x, labels_time, rotation=75, fontsize=10)
-    plt.tight_layout()
+    plyplot.xticks(x, labels_time, rotation=75, fontsize=10)
+    plyplot.tight_layout()
     #matplotlib.pyplot.subplots_adjust(bottom=0.25)
 
 
     bio = io.BytesIO()
     bio.name = "test.png"
-    plt.savefig(bio, format='png')
+    plyplot.savefig(bio, format='png')
     bio.seek(0)
     return bio
