@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
+
 from cryptotrackerbot import cryptoapi
 from cryptotrackerbot import utils
 from cryptotrackerbot import emoji
@@ -70,3 +72,16 @@ def rank_command(bot, update, job_queue):
         text += "\n\n"
     utils.send_autodestruction_message(bot, update, job_queue, text, destruct_in=120)
 
+
+
+def graph_command(bot, update, job_queue, args):
+    coin = 'BTC'
+    response = cryptoapi.get_history(coin)
+    intervals = response['Data']
+    x = []
+    y = []
+    for interval in intervals:
+        to_datetime = datetime.datetime.utcfromtimestamp(interval['time']).strftime('%Y-%m-%dT%H:%M:%SZ')
+        x.append(to_datetime)
+        y.append(interval['close'])
+    utils.build_graph(x, y)

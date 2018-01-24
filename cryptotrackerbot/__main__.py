@@ -53,6 +53,7 @@ def main():
     dp.add_handler(CommandHandler('price', commands.price_command, pass_args=True, pass_job_queue=True))
     dp.add_handler(CommandHandler(('start', 'help'), commands.help, pass_job_queue=True))
     dp.add_handler(CommandHandler('rank', commands.rank_command, pass_job_queue=True))
+    dp.add_handler(CommandHandler('graph', commands.graph_command, pass_args=True, pass_job_queue=True))
 
 
     # handle errors

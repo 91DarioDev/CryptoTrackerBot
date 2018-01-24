@@ -15,6 +15,8 @@
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import matplotlib.pyplot as plt
+
 from telegram.ext.dispatcher import run_async
 from telegram.error import BadRequest
 from cryptotrackerbot import emoji
@@ -64,3 +66,12 @@ def string_to_number(string):
     except ValueError:
         number = float(number)
     return number
+
+
+def build_graph(x, y):
+    plt.plot(x, y)
+    plt.xlabel('time')
+    plt.ylabel('prices')
+    plt.xticks(rotation=75)
+    #plt.subplots_adjust(bottom=0.7)
+    plt.show()
