@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
+
 from cryptotrackerbot import cryptoapi
 from cryptotrackerbot import utils
 from cryptotrackerbot import emoji
@@ -50,6 +52,7 @@ def help(bot, update, job_queue):
         "/price - <i>return price of crypto</i>\n"
         "/help - <i>return help message</i>\n"
         "/rank - <i>return coins rank</i>\n"
+        "/graph - <i>return coins graph</i>\n"
         "\n"
         "Note: If this bot is added in groups as admin, in order to keep the chat clean of spam, after few seconds it deletes both "
         "the command issued by the user and the message sent by the bot."
@@ -70,3 +73,33 @@ def rank_command(bot, update, job_queue):
         text += "\n\n"
     utils.send_autodestruction_message(bot, update, job_queue, text, destruct_in=120)
 
+
+
+def graph_command(bot, update, job_queue, args):
+    if len(args) != 1:
+        text = "Error: You have to append to the command as parameters the code of only one crypto you want\n\nExample:<code>/graph btc</code>"
+        utils.send_autodestruction_message(bot, update, job_queue, text)
+        return
+    coin = args[0]
+    intervals = ['minute', 'hour', 'day']
+    for interval in intervals:
+        send_graph(bot, update, job_queue, coin, interval)
+
+
+
+def send_graph(bot, update, job_queue, coin, interval):
+    response = cryptoapi.get_history(coin, interval)
+    if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
+        text = "<b>Error!</b>"
+        text += "\n{}".format(response['Message']) if 'Message' in response else ''
+        utils.send_autodestruction_message(bot, update, job_queue, text)
+        return
+    api_intervals = response['Data']
+    x = []
+    y = []
+    for api_interval in api_intervals:
+        x.append(api_interval['time'])
+        y.append(api_interval['close'])
+    pic = utils.build_graph(x, y)
+    caption = "{} - USD. INTERVAL: {}".format(coin.upper(), interval)
+    utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)

@@ -29,3 +29,11 @@ def get_rank(limit=10):
     base = "https://api.coinmarketcap.com/v1/ticker/?limit={}"
     response = requests.get(base.format(limit)).json()
     return response
+
+
+def get_history(coin, interval):
+    interval_string = 'histominute' if interval == 'minute' else 'histohour' if interval == 'hour' else 'histoday'
+    base = "https://min-api.cryptocompare.com/data/{}?fsym={}&tsym=USD&limit=60&aggregate=3&e=CCCAGG"
+    string = base.format(interval_string, coin.upper())
+    response = requests.get(string).json()
+    return response

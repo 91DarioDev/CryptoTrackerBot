@@ -14,6 +14,10 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
+import io
+import matplotlib.pyplot as plt
+from PIL import Image
 
 from telegram.ext.dispatcher import run_async
 from telegram.error import BadRequest
@@ -27,6 +31,23 @@ def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML'
     else:
         message_id = update.message.reply_text(text, parse_mode=parse_mode, quote=quote, 
                                                 disable_web_page_preview=disable_web_page_preview).message_id
+        chat_id = update.effective_chat.id
+        command_id = update.message.message_id
+        job_queue.run_once(
+            destruction, 
+            destruct_in, 
+            context=[chat_id, command_id, message_id]
+        )
+
+
+def send_autodestruction_photo(bot, update, pic, caption, job_queue, 
+                                destruct_in=60, quote=False):
+    if update.effective_chat.type == "private":
+        bot.sendChatAction(chat_id=update.effective_chat.id, action='UPLOAD_PHOTO')
+        bot.send_photo(chat_id=update.effective_chat.id, photo=pic, caption=caption)
+    else:
+        bot.sendChatAction(chat_id=update.effective_chat.id, action='UPLOAD_PHOTO')
+        message_id = bot.send_photo(chat_id=update.effective_chat.id, photo=pic, caption=caption).message_id
         chat_id = update.effective_chat.id
         command_id = update.message.message_id
         job_queue.run_once(
@@ -64,3 +85,21 @@ def string_to_number(string):
     except ValueError:
         number = float(number)
     return number
+
+
+def build_graph(x, y):
+    fig = plt.figure(figsize=(10, 5))
+    plt.plot(x, y)
+    plt.xlabel('time')
+    plt.ylabel('price')
+    labels_time = [datetime.datetime.utcfromtimestamp(i).strftime('%d-%m %H:%M') for i in x]
+    plt.xticks(x, labels_time, rotation=75, fontsize=10)
+    plt.tight_layout()
+    #plt.subplots_adjust(bottom=0.25)
+
+
+    bio = io.BytesIO()
+    bio.name = "test.png"
+    plt.savefig(bio, format='png')
+    bio.seek(0)
+    return bio
