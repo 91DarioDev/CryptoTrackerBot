@@ -17,7 +17,6 @@
 import datetime
 import io
 import matplotlib
-import matplotlib.pyplot as plt
 from PIL import Image
 
 from telegram.ext.dispatcher import run_async
@@ -90,18 +89,18 @@ def string_to_number(string):
 
 
 def build_graph(x, y):
-    fig = plt.figure(figsize=(10, 5))
-    plt.plot(x, y)
-    plt.xlabel('time')
-    plt.ylabel('price')
+    fig = matplotlib.pyplot.figure(figsize=(10, 5))
+    matplotlib.pyplot.plot(x, y)
+    matplotlib.pyplot.xlabel('time')
+    matplotlib.pyplot.ylabel('price')
     labels_time = [datetime.datetime.utcfromtimestamp(i).strftime('%d-%m %H:%M') for i in x]
-    plt.xticks(x, labels_time, rotation=75, fontsize=10)
-    plt.tight_layout()
-    #plt.subplots_adjust(bottom=0.25)
+    matplotlib.pyplot.xticks(x, labels_time, rotation=75, fontsize=10)
+    matplotlib.pyplot.tight_layout()
+    #matplotlib.pyplot.subplots_adjust(bottom=0.25)
 
 
     bio = io.BytesIO()
     bio.name = "test.png"
-    plt.savefig(bio, format='png')
+    matplotlib.pyplot.savefig(bio, format='png')
     bio.seek(0)
     return bio
