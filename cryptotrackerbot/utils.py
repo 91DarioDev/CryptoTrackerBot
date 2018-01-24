@@ -17,6 +17,7 @@
 import datetime
 import io
 import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot
 from PIL import Image
 
