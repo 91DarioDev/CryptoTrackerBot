@@ -100,9 +100,9 @@ def build_graph(x, y):
     pyplot.tight_layout()
     #matplotlib.pyplot.subplots_adjust(bottom=0.25)
 
-
     bio = io.BytesIO()
     bio.name = "test.png"
     pyplot.savefig(bio, format='png')
+    pyplot.close()  # important to free memory
     bio.seek(0)
     return bio
