@@ -31,9 +31,9 @@ def get_rank(limit=10):
     return response
 
 
-def get_history(coin):
-    minute = 'histominute'
+def get_history(coin, interval):
+    interval_string = 'histominute' if interval == 'minute' else 'histohour' if interval == 'hour' else 'histoday'
     base = "https://min-api.cryptocompare.com/data/{}?fsym={}&tsym=USD&limit=60&aggregate=3&e=CCCAGG"
-    string = base.format(minute, coin)
+    string = base.format(interval_string, coin.upper())
     response = requests.get(string).json()
     return response

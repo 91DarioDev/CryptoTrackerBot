@@ -75,13 +75,30 @@ def rank_command(bot, update, job_queue):
 
 
 def graph_command(bot, update, job_queue, args):
-    coin = 'BTC'
-    response = cryptoapi.get_history(coin)
-    intervals = response['Data']
+    if len(args) != 1:
+        text = "Error: You have to append to the command as parameters the code of only one crypto you want\n\nExample:<code>/graph btc</code>"
+        utils.send_autodestruction_message(bot, update, job_queue, text)
+        return
+    coin = args[0]
+    intervals = ['minute', 'hour', 'day']
+    for interval in intervals:
+        send_graph(bot, update, job_queue, coin, interval)
+
+
+
+def send_graph(bot, update, job_queue, coin, interval):
+    response = cryptoapi.get_history(coin, interval)
+    if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
+        text = "<b>Error!</b>"
+        text += "\n{}".format(response['Message']) if 'Message' in response else ''
+        utils.send_autodestruction_message(bot, update, job_queue, text)
+        return
+    api_intervals = response['Data']
     x = []
     y = []
-    for interval in intervals:
-        to_datetime = datetime.datetime.utcfromtimestamp(interval['time']).strftime('%Y-%m-%dT%H:%M:%SZ')
-        x.append(to_datetime)
-        y.append(interval['close'])
-    utils.build_graph(x, y)
+    for api_interval in api_intervals:
+        x.append(api_interval['time'])
+        y.append(api_interval['close'])
+    pic = utils.build_graph(x, y)
+    caption = "{} - USD. INTERVAL: {}".format(coin.upper(), interval)
+    utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)
