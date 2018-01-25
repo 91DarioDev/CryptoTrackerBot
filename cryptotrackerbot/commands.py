@@ -99,12 +99,10 @@ def send_graph(bot, update, job_queue, coin, interval):
     if interval == '1d':
         limit = 600
         interval_string = 'minute'
-        candel_width = 0.004
         aggregate = 10
     elif interval == '1w':
         limit = 600
         interval_string = 'hour'
-        candel_width = 0.025
         aggregate = 1
     response = cryptoapi.get_history(coin, aggregate=aggregate, limit=limit, interval=interval_string)
     if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
@@ -125,5 +123,5 @@ def send_graph(bot, update, job_queue, coin, interval):
         coin.upper(), 
         "1 day" if interval == '1d' else "1 week" if interval == '1w' else ''
     )
-    pic = utils.build_graph(cut_data, candel_width, title=caption)
+    pic = utils.build_graph(cut_data, title=caption)
     utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)

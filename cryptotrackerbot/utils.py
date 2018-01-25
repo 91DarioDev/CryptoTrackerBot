@@ -96,11 +96,13 @@ def string_to_number(string):
 
 
 
-def build_graph(ohlc, candel_width, title=''):
+def build_graph(ohlc, title=''):
     fig, ax1 = pyplot.subplots(figsize=(15, 7.5))
 
     for i in ohlc:
         i['time'] = date2num(datetime.datetime.fromtimestamp(i['time']))
+    candel_width = (2/3) * (ohlc[1]['time'] - ohlc[0]['time'])
+    print(width)
     data = []
     for i in ohlc:
         sub_lst = i['time'], i['open'], i['high'], i['low'], i['close']
