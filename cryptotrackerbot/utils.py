@@ -98,7 +98,6 @@ def string_to_number(string):
 
 def build_graph(ohlc, candel_width, title=''):
     fig, ax1 = pyplot.subplots(figsize=(15, 7.5))
-
     for i in ohlc:
         i['time'] = date2num(datetime.datetime.fromtimestamp(i['time']))
     data = []
