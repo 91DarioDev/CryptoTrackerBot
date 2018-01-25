@@ -37,6 +37,7 @@ def get_history(coin, interval=None, limit=None, aggregate=3):
     string = base.format(interval_string, coin.upper(), limit, aggregate)
     response = requests.get(string).json()
     return response
+<<<<<<< HEAD
 # CryptoTrackerBot - check cryptocurrencies prices on telegram
 # Copyright (C) 2018  Dario 91DarioDev <dariomsn@hotmail.it> <github.com/91dariodev>
 #
@@ -76,3 +77,5 @@ def get_history(coin, interval=None, limit=None, aggregate=3):
     string = base.format(interval_string, coin.upper(), limit, aggregate)
     response = requests.get(string).json()
     return response
+=======
+>>>>>>> candlestick
