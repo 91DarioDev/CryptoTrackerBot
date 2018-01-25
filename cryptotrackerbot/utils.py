@@ -102,7 +102,6 @@ def build_graph(ohlc, title=''):
     for i in ohlc:
         i['time'] = date2num(datetime.datetime.fromtimestamp(i['time']))
     candel_width = (2/3) * (ohlc[1]['time'] - ohlc[0]['time'])
-    print(width)
     data = []
     for i in ohlc:
         sub_lst = i['time'], i['open'], i['high'], i['low'], i['close']
