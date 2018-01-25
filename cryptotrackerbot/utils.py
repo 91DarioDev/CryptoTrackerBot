@@ -19,6 +19,7 @@ import io
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot
+from matplotlib.dates import date2num
 from PIL import Image
 
 from matplotlib import ticker
@@ -96,9 +97,16 @@ def string_to_number(string):
 
 
 def build_graph(ohlc):
-    fig = pyplot.figure(figsize=(10, 5))
-    ax1 = pyplot.subplot2grid((1,1), (0,0))
-    candlestick_ohlc(ax1, ohlc, width=0.0002)
+    fig, ax1 = pyplot.subplots(figsize=(10, 5))
+
+    for i in ohlc:
+        print(i['time'])
+        i['time'] = date2num(datetime.datetime.fromtimestamp(i['time']))
+    data = []
+    for i in ohlc:
+        sub_lst = i['time'], i['open'], i['high'], i['low'], i['close']
+        data.append(sub_lst)
+    candlestick_ohlc(ax1, data, width=0.002, colorup='g', colordown='r')
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m %H:%M'))
     ax1.xaxis.set_major_locator(ticker.MaxNLocator(10))
     ax1.grid(True)
@@ -108,7 +116,8 @@ def build_graph(ohlc):
     pyplot.title('')
     pyplot.tight_layout()
     fig.autofmt_xdate()
-    
+    ax1.autoscale_view()
+
     pyplot.show()
 
 

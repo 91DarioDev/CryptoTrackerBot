@@ -101,12 +101,8 @@ def send_graph(bot, update, job_queue, coin, interval):
         text += "\n{}".format(response['Message']) if 'Message' in response else ''
         utils.send_autodestruction_message(bot, update, job_queue, text)
         return
-    api_intervals = response['Data']
-    data = []
-    for api_interval in api_intervals:
-        conv_datetime = date2num(datetime.datetime.fromtimestamp(api_interval['time']))
-        lst = conv_datetime, api_interval['open'], api_interval['close'], api_interval['high'], api_interval['low']
-        data.append(lst)
+    data = response['Data']
+
     pic = utils.build_graph(data)
     caption = "{} - USD. INTERVAL: {}".format(coin.upper(), interval)
     utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)
