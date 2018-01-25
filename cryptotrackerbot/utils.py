@@ -96,8 +96,8 @@ def string_to_number(string):
 
 
 
-def build_graph(ohlc, candel_width=0.002, title=''):
-    fig, ax1 = pyplot.subplots(figsize=(10, 5))
+def build_graph(ohlc, candel_width, title=''):
+    fig, ax1 = pyplot.subplots(figsize=(15, 7.5))
 
     for i in ohlc:
         i['time'] = date2num(datetime.datetime.fromtimestamp(i['time']))
@@ -119,36 +119,6 @@ def build_graph(ohlc, candel_width=0.002, title=''):
 
     pyplot.show()
 
-
-    bio = io.BytesIO()
-    bio.name = "test.png"
-    pyplot.savefig(bio, format='png')
-    pyplot.close()  # important to free memory
-    bio.seek(0)
-    return bio
-
-
-    pyplot.plot(x, y)
-    pyplot.xlabel('time')
-    pyplot.ylabel('price')
-    labels_time = [datetime.datetime.utcfromtimestamp(i).strftime('%d-%m %H:%M') for i in x]
-    pyplot.xticks(x, labels_time, rotation=75, fontsize=10)
-    pyplot.tight_layout()
-    #matplotlib.pyplot.subplots_adjust(bottom=0.25)
-
-
-
-
-
-def _build_graph(x, y):
-    fig = pyplot.figure(figsize=(10, 5))
-    pyplot.plot(x, y)
-    pyplot.xlabel('time')
-    pyplot.ylabel('price')
-    labels_time = [datetime.datetime.utcfromtimestamp(i).strftime('%d-%m %H:%M') for i in x]
-    pyplot.xticks(x, labels_time, rotation=75, fontsize=10)
-    pyplot.tight_layout()
-    #matplotlib.pyplot.subplots_adjust(bottom=0.25)
 
     bio = io.BytesIO()
     bio.name = "test.png"

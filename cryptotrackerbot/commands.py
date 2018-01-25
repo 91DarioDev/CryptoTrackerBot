@@ -97,14 +97,16 @@ def graph_command(bot, update, job_queue, args):
 
 def send_graph(bot, update, job_queue, coin, interval):
     if interval == '1d':
-        limit = 200
+        limit = 600
         interval_string = 'minute'
-        candel_width = 0.001
+        candel_width = 0.004
+        aggregate = 10
     elif interval == '1w':
         limit = 600
         interval_string = 'hour'
-        candel_width = 0.1
-    response = cryptoapi.get_history(coin, limit=limit, interval=interval_string)
+        candel_width = 0.025
+        aggregate = 1
+    response = cryptoapi.get_history(coin, aggregate=aggregate, limit=limit, interval=interval_string)
     if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
         text = "<b>Error!</b>"
         text += "\n{}".format(response['Message']) if 'Message' in response else ''
@@ -119,7 +121,6 @@ def send_graph(bot, update, job_queue, coin, interval):
         if interval == '1w' and i['time'] < (time.time() - 60*60*24*7):  # stats blocked 1w
             continue
         cut_data.append(i)
-    print(cut_data)
     caption = "{} - USD. INTERVAL: {}".format(
         coin.upper(), 
         "1 day" if interval == '1d' else "1 week" if interval == '1w' else ''
