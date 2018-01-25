@@ -17,7 +17,6 @@
 import datetime
 import time
 from matplotlib.dates import date2num
-
 from cryptotrackerbot import cryptoapi
 from cryptotrackerbot import utils
 from cryptotrackerbot import emoji
@@ -100,30 +99,32 @@ def send_graph(bot, update, job_queue, coin, interval):
     if interval == '1d':
         limit = 600
         interval_string = 'minute'
+        candel_width = 0.004
+        aggregate = 10
     elif interval == '1w':
         limit = 600
         interval_string = 'hour'
-    response = cryptoapi.get_history(coin, limit=limit, interval=interval_string)
+        candel_width = 0.025
+        aggregate = 1
+    response = cryptoapi.get_history(coin, aggregate=aggregate, limit=limit, interval=interval_string)
     if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
         text = "<b>Error!</b>"
         text += "\n{}".format(response['Message']) if 'Message' in response else ''
         utils.send_autodestruction_message(bot, update, job_queue, text)
         return
     bot.sendChatAction(chat_id=update.effective_chat.id, action='UPLOAD_PHOTO') # so user knows the bot is running
-    api_intervals = response['Data']
-    x = []
-    y = []
-    for api_interval in api_intervals:
-        if interval == '1d' and api_interval['time'] < (time.time() - 60*60*24):  # stats blocked 1 day
+    data = response['Data']
+    cut_data = []
+    for i in data:
+        if interval == '1d' and i['time'] < (time.time() - 60*60*24):  # stats blocked 1 day
             continue
-        if interval == '1w' and api_interval['time'] < (time.time() - 60*60*24*7):  # stats blocked 1w
+        if interval == '1w' and i['time'] < (time.time() - 60*60*24*7):  # stats blocked 1w
             continue
-        conv_datetime = date2num(datetime.datetime.fromtimestamp(api_interval['time']))
-        x.append(conv_datetime)
-        y.append(api_interval['close'])
+        cut_data.append(i)
     caption = "{} - USD. INTERVAL: {}".format(
         coin.upper(), 
         "1 day" if interval == '1d' else "1 week" if interval == '1w' else ''
     )
-    pic = utils.build_graph(x, y, title=caption)
+    pic = utils.build_graph(cut_data, candel_width, title=caption)
     utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)
+ption, job_queue, destruct_in=60, quote=False)
