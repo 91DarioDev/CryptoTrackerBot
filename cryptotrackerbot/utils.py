@@ -19,6 +19,8 @@ import io
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pyplot
+from matplotlib import ticker
+import matplotlib.dates as mdates
 from PIL import Image
 
 from telegram.ext.dispatcher import run_async
@@ -90,15 +92,19 @@ def string_to_number(string):
     return number
 
 
-def build_graph(x, y):
+def build_graph(x, y, title=''):
     fig = pyplot.figure(figsize=(10, 5))
+    ax1 = pyplot.subplot2grid((1,1), (0,0))
     pyplot.plot(x, y)
-    pyplot.xlabel('time')
+    pyplot.xlabel('date')
     pyplot.ylabel('price')
-    labels_time = [datetime.datetime.utcfromtimestamp(i).strftime('%d-%m %H:%M') for i in x]
-    pyplot.xticks(x, labels_time, rotation=75, fontsize=10)
     pyplot.tight_layout()
-    #matplotlib.pyplot.subplots_adjust(bottom=0.25)
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m %H:%M'))
+    ax1.xaxis.set_major_locator(ticker.MaxNLocator(10))
+    ax1.grid(True)
+    pyplot.title(title)
+    matplotlib.pyplot.subplots_adjust(top=0.9)
+    fig.autofmt_xdate()  # automatically rotate the date if needed
 
     bio = io.BytesIO()
     bio.name = "test.png"
@@ -106,3 +112,4 @@ def build_graph(x, y):
     pyplot.close()  # important to free memory
     bio.seek(0)
     return bio
+
