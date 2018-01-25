@@ -21,6 +21,10 @@ matplotlib.use('Agg')
 from matplotlib import pyplot
 from PIL import Image
 
+from matplotlib import ticker
+import matplotlib.dates as mdates
+from matplotlib.finance import candlestick_ohlc
+
 from telegram.ext.dispatcher import run_async
 from telegram.error import BadRequest
 from cryptotrackerbot import emoji
@@ -90,7 +94,45 @@ def string_to_number(string):
     return number
 
 
-def build_graph(x, y):
+
+def build_graph(ohlc):
+    fig = pyplot.figure(figsize=(10, 5))
+    ax1 = pyplot.subplot2grid((1,1), (0,0))
+    candlestick_ohlc(ax1, ohlc, width=0.0002)
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m %H:%M'))
+    ax1.xaxis.set_major_locator(ticker.MaxNLocator(10))
+    ax1.grid(True)
+
+    pyplot.xlabel('Date')
+    pyplot.ylabel('Price')
+    pyplot.title('')
+    pyplot.tight_layout()
+    fig.autofmt_xdate()
+    
+    pyplot.show()
+
+
+    bio = io.BytesIO()
+    bio.name = "test.png"
+    pyplot.savefig(bio, format='png')
+    pyplot.close()  # important to free memory
+    bio.seek(0)
+    return bio
+
+
+    pyplot.plot(x, y)
+    pyplot.xlabel('time')
+    pyplot.ylabel('price')
+    labels_time = [datetime.datetime.utcfromtimestamp(i).strftime('%d-%m %H:%M') for i in x]
+    pyplot.xticks(x, labels_time, rotation=75, fontsize=10)
+    pyplot.tight_layout()
+    #matplotlib.pyplot.subplots_adjust(bottom=0.25)
+
+
+
+
+
+def _build_graph(x, y):
     fig = pyplot.figure(figsize=(10, 5))
     pyplot.plot(x, y)
     pyplot.xlabel('time')

@@ -15,7 +15,7 @@
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
-
+from matplotlib.dates import date2num
 from cryptotrackerbot import cryptoapi
 from cryptotrackerbot import utils
 from cryptotrackerbot import emoji
@@ -88,7 +88,7 @@ def graph_command(bot, update, job_queue, args):
         utils.send_autodestruction_message(bot, update, job_queue, text)
         return
     coin = args[0]
-    intervals = ['minute', 'hour', 'day']
+    intervals = ['minute', 'hour']#, 'day']
     for interval in intervals:
         send_graph(bot, update, job_queue, coin, interval)
 
@@ -102,11 +102,11 @@ def send_graph(bot, update, job_queue, coin, interval):
         utils.send_autodestruction_message(bot, update, job_queue, text)
         return
     api_intervals = response['Data']
-    x = []
-    y = []
+    data = []
     for api_interval in api_intervals:
-        x.append(api_interval['time'])
-        y.append(api_interval['close'])
-    pic = utils.build_graph(x, y)
+        conv_datetime = date2num(datetime.datetime.fromtimestamp(api_interval['time']))
+        lst = conv_datetime, api_interval['open'], api_interval['close'], api_interval['high'], api_interval['low']
+        data.append(lst)
+    pic = utils.build_graph(data)
     caption = "{} - USD. INTERVAL: {}".format(coin.upper(), interval)
     utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)
