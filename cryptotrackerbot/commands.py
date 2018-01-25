@@ -15,6 +15,7 @@
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+import time
 from matplotlib.dates import date2num
 from cryptotrackerbot import cryptoapi
 from cryptotrackerbot import utils
@@ -88,21 +89,40 @@ def graph_command(bot, update, job_queue, args):
         utils.send_autodestruction_message(bot, update, job_queue, text)
         return
     coin = args[0]
-    intervals = ['minute', 'hour']#, 'day']
+    intervals = ['1d', '1w']#, 'day']
     for interval in intervals:
         send_graph(bot, update, job_queue, coin, interval)
 
 
 
 def send_graph(bot, update, job_queue, coin, interval):
-    response = cryptoapi.get_history(coin, interval)
+    if interval == '1d':
+        limit = 200
+        interval_string = 'minute'
+        candel_width = 0.001
+    elif interval == '1w':
+        limit = 600
+        interval_string = 'hour'
+        candel_width = 0.1
+    response = cryptoapi.get_history(coin, limit=limit, interval=interval_string)
     if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
         text = "<b>Error!</b>"
         text += "\n{}".format(response['Message']) if 'Message' in response else ''
         utils.send_autodestruction_message(bot, update, job_queue, text)
         return
+    bot.sendChatAction(chat_id=update.effective_chat.id, action='UPLOAD_PHOTO') # so user knows the bot is running
     data = response['Data']
-
-    pic = utils.build_graph(data)
-    caption = "{} - USD. INTERVAL: {}".format(coin.upper(), interval)
+    cut_data = []
+    for i in data:
+        if interval == '1d' and i['time'] < (time.time() - 60*60*24):  # stats blocked 1 day
+            continue
+        if interval == '1w' and i['time'] < (time.time() - 60*60*24*7):  # stats blocked 1w
+            continue
+        cut_data.append(i)
+    print(cut_data)
+    caption = "{} - USD. INTERVAL: {}".format(
+        coin.upper(), 
+        "1 day" if interval == '1d' else "1 week" if interval == '1w' else ''
+    )
+    pic = utils.build_graph(cut_data, candel_width, title=caption)
     utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)
