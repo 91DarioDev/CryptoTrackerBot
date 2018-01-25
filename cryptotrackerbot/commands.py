@@ -122,7 +122,7 @@ def send_graph(bot, update, job_queue, coin, interval):
         y.append(api_interval['close'])
     caption = "{} - USD. INTERVAL: {}".format(
         coin.upper(), 
-        interval
+        "1 day" if interval == '1d' else "1 week" if interval == '1w' else ''
     )
     pic = utils.build_graph(x, y, title=caption)
     utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)
