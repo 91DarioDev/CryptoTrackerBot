@@ -15,6 +15,7 @@
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
 import datetime
+import time
 from matplotlib.dates import date2num
 
 from cryptotrackerbot import cryptoapi
@@ -89,14 +90,20 @@ def graph_command(bot, update, job_queue, args):
         utils.send_autodestruction_message(bot, update, job_queue, text)
         return
     coin = args[0]
-    intervals = ['minute', 'hour']#, 'day']
+    intervals = ['1d', '1w']#, 'day']
     for interval in intervals:
         send_graph(bot, update, job_queue, coin, interval)
 
 
 
 def send_graph(bot, update, job_queue, coin, interval):
-    response = cryptoapi.get_history(coin, interval)
+    if interval == '1d':
+        limit = 600
+        interval_string = 'minute'
+    elif interval == '1w':
+        limit = 600
+        interval_string = 'hour'
+    response = cryptoapi.get_history(coin, limit=limit, interval=interval_string)
     if 'Response' in response and response['Response'] == 'Error':  # return if response from api is error
         text = "<b>Error!</b>"
         text += "\n{}".format(response['Message']) if 'Message' in response else ''
@@ -106,13 +113,16 @@ def send_graph(bot, update, job_queue, coin, interval):
     x = []
     y = []
     for api_interval in api_intervals:
+        if interval == '1d' and api_interval['time'] < (time.time() - 60*60*24):  # stats blocked 1 day
+            continue
+        if interval == '1w' and api_interval['time'] < (time.time() - 60*60*24*7):  # stats blocked 1w
+            continue
         conv_datetime = date2num(datetime.datetime.fromtimestamp(api_interval['time']))
         x.append(conv_datetime)
         y.append(api_interval['close'])
-    caption = "{} - USD. INTERVAL: from \"{}\" to \"{}\"".format(
+    caption = "{} - USD. INTERVAL: {}".format(
         coin.upper(), 
-        datetime.datetime.fromtimestamp(api_intervals[0]['time']).strftime('%d-%m %H:%M'), 
-        datetime.datetime.fromtimestamp(api_intervals[len(api_intervals)-1]['time']).strftime('%d-%m %H:%M')
+        interval
     )
     pic = utils.build_graph(x, y, title=caption)
     utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)
