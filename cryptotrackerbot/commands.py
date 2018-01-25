@@ -109,6 +109,7 @@ def send_graph(bot, update, job_queue, coin, interval):
         text += "\n{}".format(response['Message']) if 'Message' in response else ''
         utils.send_autodestruction_message(bot, update, job_queue, text)
         return
+    bot.sendChatAction(chat_id=update.effective_chat.id, action='UPLOAD_PHOTO') # so user knows the bot is running
     api_intervals = response['Data']
     x = []
     y = []

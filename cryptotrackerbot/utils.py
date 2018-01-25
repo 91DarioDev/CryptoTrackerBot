@@ -48,10 +48,8 @@ def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML'
 def send_autodestruction_photo(bot, update, pic, caption, job_queue, 
                                 destruct_in=60, quote=False):
     if update.effective_chat.type == "private":
-        bot.sendChatAction(chat_id=update.effective_chat.id, action='UPLOAD_PHOTO')
         bot.send_photo(chat_id=update.effective_chat.id, photo=pic, caption=caption)
     else:
-        bot.sendChatAction(chat_id=update.effective_chat.id, action='UPLOAD_PHOTO')
         message_id = bot.send_photo(chat_id=update.effective_chat.id, photo=pic, caption=caption).message_id
         chat_id = update.effective_chat.id
         command_id = update.message.message_id
