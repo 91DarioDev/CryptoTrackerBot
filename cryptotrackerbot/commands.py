@@ -127,4 +127,3 @@ def send_graph(bot, update, job_queue, coin, interval):
     )
     pic = utils.build_graph(cut_data, candel_width, title=caption)
     utils.send_autodestruction_photo(bot, update, pic, caption, job_queue, destruct_in=60, quote=False)
-ption, job_queue, destruct_in=60, quote=False)
