@@ -118,7 +118,7 @@ def build_graph(ohlc, title=''):
     fig.autofmt_xdate()
     ax1.autoscale_view()
 
-    pyplot.show()
+    #pyplot.show()  # no need to call show on server
 
 
     bio = io.BytesIO()
