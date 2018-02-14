@@ -106,9 +106,10 @@ def string_to_number(string):
         number = float(number)
     return number
 
-
+import time
 build_graph_lock = threading.Lock()
 def build_graph(ohlc, title=''):
+    start = time.time()
     with build_graph_lock:
         fig, ax1 = pyplot.subplots(figsize=(15, 7.5))
 
@@ -139,4 +140,5 @@ def build_graph(ohlc, title=''):
         pyplot.savefig(bio, format='png')
         pyplot.close()  # important to free memory
         bio.seek(0)
+        print(start-time.time())
         return bio
