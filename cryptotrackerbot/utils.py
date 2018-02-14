@@ -107,10 +107,9 @@ def string_to_number(string):
     return number
 
 
-
+build_graph_lock = threading.Lock()
 def build_graph(ohlc, title=''):
-    lock = threading.Lock()
-    with lock:
+    with build_graph_lock:
         fig, ax1 = pyplot.subplots(figsize=(15, 7.5))
 
         for i in ohlc:
