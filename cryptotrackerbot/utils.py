@@ -111,6 +111,7 @@ build_graph_lock = threading.Lock()
 def build_graph(ohlc, title=''):
     start = time.time()
     with build_graph_lock:
+        start = time.time()
         fig, ax1 = pyplot.subplots(figsize=(15, 7.5))
 
         for i in ohlc:
