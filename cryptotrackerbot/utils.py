@@ -140,5 +140,5 @@ def build_graph(ohlc, title=''):
         pyplot.savefig(bio, format='png')
         pyplot.close()  # important to free memory
         bio.seek(0)
-        print(start-time.time())
+        print(time.time()-start)
         return bio
