@@ -15,7 +15,6 @@
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import threading
 from telegram.ext.dispatcher import run_async
 
 import datetime
@@ -107,35 +106,35 @@ def string_to_number(string):
     return number
 
 
-build_graph_lock = threading.Lock()
+
 def build_graph(ohlc, title=''):
-    with build_graph_lock:
-        fig, ax1 = pyplot.subplots(figsize=(15, 7.5))
+    fig = pyplot.figure(figsize=(15, 7.5))
+    ax1 = fig.add_subplot(111)
 
-        for i in ohlc:
-            i['time'] = date2num(datetime.datetime.fromtimestamp(i['time']))
-        candel_width = (2/3) * (ohlc[1]['time'] - ohlc[0]['time'])
-        data = []
-        for i in ohlc:
-            sub_lst = i['time'], i['open'], i['high'], i['low'], i['close']
-            data.append(sub_lst)
-        candlestick_ohlc(ax1, data, width=candel_width, colorup='g', colordown='r')
-        ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m %H:%M'))
-        ax1.xaxis.set_major_locator(ticker.MaxNLocator(10))
-        ax1.grid(True)
+    for i in ohlc:
+        i['time'] = date2num(datetime.datetime.fromtimestamp(i['time']))
+    candel_width = (2/3) * (ohlc[1]['time'] - ohlc[0]['time'])
+    data = []
+    for i in ohlc:
+        sub_lst = i['time'], i['open'], i['high'], i['low'], i['close']
+        data.append(sub_lst)
+    candlestick_ohlc(ax1, data, width=candel_width, colorup='g', colordown='r')
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d-%m %H:%M'))
+    ax1.xaxis.set_major_locator(ticker.MaxNLocator(10))
+    ax1.grid(True)
 
-        pyplot.xlabel('Date')
-        pyplot.ylabel('Price')
-        pyplot.title(title)
-        pyplot.tight_layout()
-        fig.autofmt_xdate()
-        ax1.autoscale_view()
+    ax1.set_xlabel('Date')
+    ax1.set_ylabel('Price')
+    ax1.set_title(title)
+    ax1.autoscale_view()
+    fig.tight_layout()
+    fig.autofmt_xdate()
 
-        #pyplot.show()  # no need to call show on server
+    #pyplot.show()  # no need to call show on server
 
-        bio = io.BytesIO()
-        bio.name = "test.png"
-        pyplot.savefig(bio, format='png')
-        pyplot.close()  # important to free memory
-        bio.seek(0)
-        return bio
+    bio = io.BytesIO()
+    bio.name = "test.png"
+    fig.savefig(bio, format='png')
+    pyplot.close()  # important to free memory
+    bio.seek(0)
+    return bio
