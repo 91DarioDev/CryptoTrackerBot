@@ -82,7 +82,7 @@ def rank_command(bot, update, job_queue):
 
 
 
-#@run_async don't run async or pics are overhide
+@run_async
 def graph_command(bot, update, job_queue, args):
     if len(args) != 1:
         text = "Error: You have to append to the command as parameters the code of only one crypto you want\n\nExample:<code>/graph btc</code>"
