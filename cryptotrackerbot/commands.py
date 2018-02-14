@@ -77,7 +77,7 @@ def rank_command(bot, update, job_queue):
         text += " {}".format("+" if utils.string_to_number(coin["percent_change_24h"]) > 0 else "")
         text += "{}%{}".format(coin["percent_change_24h"], utils.arrow_up_or_down(utils.string_to_number(coin["percent_change_24h"])))
         text += " {}{}".format(utils.sep(round(utils.string_to_number(coin['price_usd']), 2)), emoji.USD)
-        text += "\n\n"
+        text += "\n"
     utils.send_autodestruction_message(bot, update, job_queue, text, destruct_in=120)
 
 
@@ -110,7 +110,7 @@ def send_graph(bot, update, job_queue, coin, interval):
         text += "\n{}".format(response['Message']) if 'Message' in response else ''
         utils.send_autodestruction_message(bot, update, job_queue, text)
         return
-    bot.sendChatAction(chat_id=update.effective_chat.id, action='UPLOAD_PHOTO') # so user knows the bot is running
+    utils.send_sending_photo_alert(bot, update) # so user knows the bot is running
     data = response['Data']
     cut_data = []
     for i in data:

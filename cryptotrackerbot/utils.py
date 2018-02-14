@@ -81,6 +81,11 @@ def destruction(bot, job):
                 pass
 
 
+@run_async
+def send_sending_photo_alert(bot, update):
+    bot.sendChatAction(chat_id=update.effective_chat.id, action='UPLOAD_PHOTO')
+
+
 def sep(num, none_is_zero=False):
     if num is None:
         return 0 if none_is_zero is False else None
