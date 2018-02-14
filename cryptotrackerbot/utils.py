@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with CryptoTrackerBot.  If not, see <http://www.gnu.org/licenses/>.
 
+from telegram.ext.dispatcher import run_async
+
 import datetime
 import io
 import matplotlib
@@ -32,6 +34,8 @@ from cryptotrackerbot import emoji
 
 matplotlib.use('Agg')
 
+
+@run_async
 def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML', 
                                 destruct_in=20, quote=False, disable_web_page_preview=True):
     if update.effective_chat.type == "private":
@@ -48,6 +52,7 @@ def send_autodestruction_message(bot, update, job_queue, text, parse_mode='HTML'
         )
 
 
+@run_async
 def send_autodestruction_photo(bot, update, pic, caption, job_queue, 
                                 destruct_in=60, quote=False):
     if update.effective_chat.type == "private":
