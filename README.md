@@ -10,6 +10,12 @@ CryptoTrackerBot - check cryptocurrencies prices on telegram
 ```
 _Note: If this bot is added in groups as admin, in order to keep the chat clean of spam, after few seconds it deletes both the command issued by the user and the message sent by the bot._
 
+## Screenshots:
+<p align="left">
+<img src="../master/resources/screenshots/screenshot1.jpg" width="250">
+<img src="../master/resources/screenshots/screenshot2.jpg" width="250">
+</p>
+
 ## How to install:
 
 ### On Linux:
