@@ -20,13 +20,13 @@ import setuptools
 
 setuptools.setup(
 
-    name="cryptotrackerbot",
+    name="MrkingPriceTrackerBot",
     version="1",
 
     license="AGPL-3.0",
 
-    author="Dario 91DarioDev",
-    author_email="dariomsn@hotmail.it",
+    author="Mrking",
+    author_email="swatantrasinghparihar72@gmail.com",
 
     install_requires=[
         "python-telegram-bot",
@@ -36,12 +36,12 @@ setuptools.setup(
     ],
 
     packages=[
-        "cryptotrackerbot",
+        "MrkingPriceTrackerBot",
     ],
 
     entry_points={
         "console_scripts": [
-            "cryptotrackerbot = cryptotrackerbot.__main__:main",
+            "MrkingPriceTrackerBot = MrkingPriceTrackerBot.__main__:main",
         ],
     },
 
