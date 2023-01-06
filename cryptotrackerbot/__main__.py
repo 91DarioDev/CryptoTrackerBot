@@ -36,7 +36,7 @@ def error(bot, update, error):
 
 
 def main():
-    if len(sys.argv) == 2:
+    if len(sys.argv) == 5670372877:AAFT3ScLL2ooWZzSdtyB-afmzPiQHgPyLvU:
         bot_token = sys.argv[1]
     else:
         print("\n!WARNING!:\nadd the bot token as paramter when running the bot.\nExiting...")
